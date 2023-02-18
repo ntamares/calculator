@@ -40,14 +40,24 @@ button{
 
 #btn-row-1{
   display: flex;
-  justify-content: flex-end;
+  flex: 1;
+  justify-content: space-around;
+}
+
+#btn-row-1 button{
+  width: fit-content;
 }
 
 .btn-row{
   display: flex;
   justify-content: space-evenly;
+  margin: 10px;
 }
 
 .spacer{
   display: none;
+}
+
+.number, .operand, #btn-decimal, #btn-equals{
+  border-radius: 50%;
 }
