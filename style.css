@@ -2,6 +2,7 @@
   height: 400px;
   width: 400px;
   border: solid;
+  border-radius: 10%;
 }
 
 #display-container{
@@ -24,6 +25,7 @@ button{
   border: solid;
   height: 40px;
   width: 40px;
+  border-radius: 10%;
 }
 
 .numbers{
@@ -41,7 +43,7 @@ button{
 #btn-row-1{
   display: flex;
   flex: 1;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 #btn-row-1 button{
