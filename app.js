@@ -20,9 +20,12 @@ function getResult(){
     return (el === '+' || el === '-' || el === '/' || el === '*');
   });
 
+
   for(let j = 0; j < opIndex; j++){
     num1 += query[j];
   }
+
+  if(opIndex === -1 || qLen === (opIndex + 1)) return;
 
   for(let k = opIndex + 1; k < query.length; k++){
     num2 += query[k];
@@ -30,10 +33,6 @@ function getResult(){
 
   num1 = +num1;
   num2 = +num2;
-
-  // do checks for query
-  //split query
-  // make result num1, then clear rest of arr?
 
   switch(query[opIndex]){
     case '+':
@@ -48,28 +47,32 @@ function getResult(){
     case '/':
       result = num1 / num2;
       break;
-    default:
-       alert('error');
+    case -1:
+      return;
   }
 
   document.getElementById('calc-display').value = result;
+  query.length = 0;
 }
 
 function appendNumber(){
   let input = +(this.innerText);
-  let qLen = query.length;
+  
+  if(query.length === 0){
+    document.getElementById('calc-display').value = '';
+  }
 
   query.push(input);
 
   console.log(query);
 
-  document.getElementById('calc-display').value = query;
-  // if(isNewQuery) clear?
+  document.getElementById('calc-display').value += input;
 }
 
 function appendOperator(){
   let input = this.id.slice(4, this.id.length);
   let qLen = query.length;
+  let display = document.getElementById('calc-display');
 
   switch(input){
     case 'plus':
@@ -95,17 +98,13 @@ function appendOperator(){
   
   if(typeof query[qLen - 1] === 'number'){
     query.push(input);
+    display.value += input;
   }
 
-  console.log('checkpoint 5');
-
-  if(typeof query[qLen - 1] === 'string'){
+  if(query[qLen - 1] === '+' || query[qLen -1] === '*' || query[qLen -1] === '-' || query[qLen - 1] === '/'){
     query[qLen - 1] = input;
+    display.value = display.value.slice(0, -1) + input;
   }
-
-  console.log(query);
-
-  document.getElementById('calc-display').value = query;
 }
 
 function clear(){
