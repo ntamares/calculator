@@ -5,15 +5,14 @@ const equalsBtn = document.getElementById('btn-equals');
 const clearBtn = document.getElementById('btn-clear');
 const decimalBtn = document.getElementById('btn-decimal');
 const deleteBtn = document.getElementById('btn-delete');
-let isNewQuery = false;
+let canAppendNumbers = true;
 
 function getResult(){
   let qLen = query.length;
   let num2 = '';  
   let result;
-  let isNewQuery = false;
 
-  qLen === 1 && isNewQuery ? num1 = query[0] : num1 = '';
+  qLen === 1 ? num1 = query[0] : num1 = '';
   // ??? dont use ternary?
 
   const opIndex = query.findIndex(el => {
@@ -21,14 +20,14 @@ function getResult(){
   });
 
 
-  for(let j = 0; j < opIndex; j++){
-    num1 += query[j];
+  for(let i = 0; i < opIndex; i++){
+    num1 += query[i];
   }
 
   if(opIndex === -1 || qLen === (opIndex + 1)) return;
 
-  for(let k = opIndex + 1; k < query.length; k++){
-    num2 += query[k];
+  for(let i = opIndex + 1; i < query.length; i++){
+    num2 += query[i];
   }
 
   num1 = +num1;
@@ -52,7 +51,12 @@ function getResult(){
   }
 
   document.getElementById('calc-display').value = result;
+
   query.length = 0;
+  query.push(+result);
+
+  canAppendNumbers = false;
+  console.log(query);
 }
 
 function appendNumber(){
@@ -64,15 +68,29 @@ function appendNumber(){
 
   query.push(input);
 
+  document.getElementById('calc-display').value += input;
+
   console.log(query);
 
-  document.getElementById('calc-display').value += input;
 }
 
 function appendOperator(){
   let input = this.id.slice(4, this.id.length);
   let qLen = query.length;
   let display = document.getElementById('calc-display');
+  
+  const opIndex = query.findIndex(el => {
+    return (el === '+' || el === '-' || el === '/' || el === '*');
+  });
+
+  if(opIndex !== -1 && (qLen > opIndex + 1)){
+    getResult();
+    qLen = query.length;
+  }
+
+  console.log('input is ' + input);
+  console.log(typeof query[qLen - 1]);
+
 
   switch(input){
     case 'plus':
@@ -92,11 +110,14 @@ function appendOperator(){
   }
 
   if(qLen === 0) return;
+
   
   //TODO check if there are two separate numbers and an operator
   // then do 'temporary' execute in string to display (query and CURRENT result)
-  
+  console.log('checkpoint 1')
   if(typeof query[qLen - 1] === 'number'){
+    console.log('checkpoint 2')
+
     query.push(input);
     display.value += input;
   }
@@ -104,7 +125,11 @@ function appendOperator(){
   if(query[qLen - 1] === '+' || query[qLen -1] === '*' || query[qLen -1] === '-' || query[qLen - 1] === '/'){
     query[qLen - 1] = input;
     display.value = display.value.slice(0, -1) + input;
+    console.log('checkpoint 3')
   }
+ 
+  console.log(query);
+  canAppendNumbers = true;
 }
 
 function clear(){
