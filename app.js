@@ -66,12 +66,11 @@ function appendNumber(){
     document.getElementById('calc-display').value = '';
   }
 
-  query.push(input);
+  if(canAppendNumbers){
+    query.push(input);
+    document.getElementById('calc-display').value += input;
 
-  document.getElementById('calc-display').value += input;
-
-  console.log(query);
-
+  }
 }
 
 function appendOperator(){
@@ -135,7 +134,7 @@ function appendOperator(){
 function clear(){
   query.length = 0;
   result = '';
-
+  canAppendNumbers = true;
   document.getElementById('calc-display').value = '';
 }
 
