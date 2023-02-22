@@ -13,7 +13,6 @@ function getResult(){
   let result;
 
   qLen === 1 ? num1 = query[0] : num1 = '';
-  // ??? dont use ternary?
 
   const opIndex = query.findIndex(el => {
     return (el === '+' || el === '-' || el === '/' || el === '*');
@@ -69,7 +68,6 @@ function appendNumber(){
   if(canAppendNumbers){
     query.push(input);
     document.getElementById('calc-display').value += input;
-
   }
 }
 
@@ -87,9 +85,7 @@ function appendOperator(){
     qLen = query.length;
   }
 
-  console.log('input is ' + input);
   console.log(typeof query[qLen - 1]);
-
 
   switch(input){
     case 'plus':
@@ -110,13 +106,8 @@ function appendOperator(){
 
   if(qLen === 0) return;
 
-  
-  //TODO check if there are two separate numbers and an operator
-  // then do 'temporary' execute in string to display (query and CURRENT result)
   console.log('checkpoint 1')
   if(typeof query[qLen - 1] === 'number'){
-    console.log('checkpoint 2')
-
     query.push(input);
     display.value += input;
   }
@@ -140,11 +131,9 @@ function clear(){
 
 function backspace(){
   query.pop();
-
   document.getElementById('calc-display').value = query;
 }
 
-// add listeners to each button
 numberBtns.forEach(btn => btn.addEventListener('mousedown', appendNumber));
 operatorBtns.forEach(btn => btn.addEventListener('mousedown', appendOperator));
 equalsBtn.addEventListener('mousedown', getResult);
