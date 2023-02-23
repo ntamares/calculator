@@ -5,7 +5,9 @@ const equalsBtn = document.getElementById('btn-equals');
 const clearBtn = document.getElementById('btn-clear');
 const decimalBtn = document.getElementById('btn-decimal');
 const deleteBtn = document.getElementById('btn-delete');
+const display = document.getElementById('calc-display');
 let canAppendNumbers = true;
+let canAppendDecimal = true;
 
 function getResult(){
   let qLen = query.length;
@@ -49,32 +51,30 @@ function getResult(){
       return;
   }
 
-  document.getElementById('calc-display').value = result;
+  display.value = result;
 
   query.length = 0;
   query.push(+result);
 
   canAppendNumbers = false;
-  console.log(query);
 }
 
 function appendNumber(){
   let input = +(this.innerText);
   
   if(query.length === 0){
-    document.getElementById('calc-display').value = '';
+    display.value = '';
   }
 
   if(canAppendNumbers){
     query.push(input);
-    document.getElementById('calc-display').value += input;
+    display.value += input;
   }
 }
 
 function appendOperator(){
   let input = this.id.slice(4, this.id.length);
   let qLen = query.length;
-  let display = document.getElementById('calc-display');
   
   const opIndex = query.findIndex(el => {
     return (el === '+' || el === '-' || el === '/' || el === '*');
@@ -84,8 +84,6 @@ function appendOperator(){
     getResult();
     qLen = query.length;
   }
-
-  console.log(typeof query[qLen - 1]);
 
   switch(input){
     case 'plus':
@@ -106,7 +104,6 @@ function appendOperator(){
 
   if(qLen === 0) return;
 
-  console.log('checkpoint 1')
   if(typeof query[qLen - 1] === 'number'){
     query.push(input);
     display.value += input;
@@ -115,23 +112,34 @@ function appendOperator(){
   if(query[qLen - 1] === '+' || query[qLen -1] === '*' || query[qLen -1] === '-' || query[qLen - 1] === '/'){
     query[qLen - 1] = input;
     display.value = display.value.slice(0, -1) + input;
-    console.log('checkpoint 3')
   }
+
+  console.log('checkpoint');
  
-  console.log(query);
+  canAppendDecimal = true;
   canAppendNumbers = true;
+}
+
+function appendDecimal(){
+  console.log(query);
+  if(canAppendDecimal){
+    query.push('.');
+    display.value = display.value + '.'
+    canAppendDecimal = false;
+    canAppendNumbers = true;
+  }
 }
 
 function clear(){
   query.length = 0;
   result = '';
   canAppendNumbers = true;
-  document.getElementById('calc-display').value = '';
+  display.value = '';
 }
 
 function backspace(){
   query.pop();
-  document.getElementById('calc-display').value = query;
+  display.value = query;
 }
 
 numberBtns.forEach(btn => btn.addEventListener('mousedown', appendNumber));
@@ -139,3 +147,4 @@ operatorBtns.forEach(btn => btn.addEventListener('mousedown', appendOperator));
 equalsBtn.addEventListener('mousedown', getResult);
 clearBtn.addEventListener('mousedown', clear);
 deleteBtn.addEventListener('mousedown', backspace);
+decimalBtn.addEventListener('mousedown', appendDecimal);
